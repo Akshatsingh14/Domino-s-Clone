@@ -1,0 +1,78 @@
+{% load static %}
+<header>
+  <div class="nav">
+    <div class="left">
+      <a href="{% url 'index' %}" class="la"><img
+        src="{% static 'images/index/dominos-logo.png' %}"
+        alt=""
+        height="33%"
+        width="43%"
+      /></a>
+    </div>
+    <div class="middle"></div>
+    <div class="right">
+      <a href="{% url 'cart' %}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>cart</title>
+        <path
+          d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
+      </svg></a>
+      <p style="text-transform: capitalize;">Welcome {{user}}!</p>
+      <div class="user-dropdown">
+        <i class="fa-solid fa-user" aria-haspopup="true" aria-expanded="false"></i>
+        <div class="dropdown-content">
+          <a href="{% url 'user_profile' %}">Profile</a>
+          <a href="{% url 'log_out' %}">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .user-dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .user-dropdown:hover .fa-user {
+    color: #e31837; /* Domino's red color */
+    cursor: pointer;
+  }
+
+  .user-dropdown i{
+    padding-left: 0.4rem;
+    font-size: 27px;
+  }
+
+  .right a{
+    width: fit-content;
+    height: fit-content;
+    text-decoration: none;
+  }
+
+  .right svg path:hover{
+    fill: #e31837;
+  }
+
+</style>
