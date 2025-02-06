@@ -62,7 +62,7 @@ Domino’s Clone is a food ordering platform built using **Django**. It allows u
 
 ## Project File Structure  
 
-
+```
 dominos-clone/
 │
 ├── dominos/          # Main Django project directory
@@ -85,7 +85,7 @@ dominos-clone/
 │       ├── order_history.html
 │
 └── manage.py         # Django management script
-
+```
 
 ---
 
