@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="{% static 'css/update.css' %}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="{% url 'index' %}"><img src="{% static 'images/index/dominos-logo.png' %}" alt="Logo"></a>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'index' %}" class="nav-link">Home</a>
+                <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img id="profilePreview" 
+                            src="{% if profile.user_img %}{{ profile.user_img.url }}{% else %}{% static 'images/index/user.png' %}{% endif %}" 
+                            alt="Profile Picture">
+                        <label for="user_img" class="upload-btn">Upload New Picture</label>
+                        <input type="file" name="user_img" id="user_img" accept="image/*" onchange="previewProfilePicture(this)" hidden>
+                    </div>
+                    <div class="profile-info">
+                        <h1>Edit Profile</h1>
+                            <div class="profile-details">
+                                <input type="email" name="email" value="{{ user.email }}" placeholder="Email" required>
+                                <input type="password" name="password" value="" placeholder="Change Password ?" >
+                                <input type="text" name="phone" value="{{ profile.phone }}" placeholder="Phone">
+                                <input type="number" name="age" value="{{ profile.age }}" placeholder="Age">
+                                <input type="date" name="dob" value="{{ profile.dob|date:'Y-m-d' }}" placeholder="Date of Birth">
+                                <select name="gender">
+                                    <option value="" disabled selected>Select Gender</option>
+                                    <option value="Male" {% if profile.gender == "Male" %}selected{% endif %}>Male</option>
+                                    <option value="Female" {% if profile.gender == "Female" %}selected{% endif %}>Female</option>
+                                </select>
+                            </div>
+                            <div class="profile-actions">
+                                <button type="submit">Save Changes</button>
+                            </div>    
+                    </div>    
+                </div>
+            
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function previewProfilePicture(input) {
+            const preview = document.getElementById('profilePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>

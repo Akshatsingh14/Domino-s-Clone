@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Domino's Clone</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    {% include 'nav.html' %}
+    
+    <section>
+      <div class="sec-top">
+        <h2>What are you craving for?</h2>
+      </div>
+      {% for i in images %}
+      <div class="sec-down">
+        <img src="{{i.image.url}}" alt="" height="80px" width="80px">
+        <p style="text-transform: capitalize;">{{i.name}}</p>
+      </div>
+      {% endfor %}
+    </section>
+
+    <div class="sec-2">
+      <div class="sec2-top">
+        <h2>What's New</h2>
+      </div>
+      <div class="sec2-down">
+        {% for i in images2 %}
+        <img src="{{i.image.url}}" alt="card">
+        {% endfor %}
+      </div>
+    </div>
+    
+    <div class="head3">
+      <div class="hd-up">
+        <img src="{% static 'images/index/crown.png' %}" alt="" height="37px" width="188px">
+      </div>
+      <div class="hd-dn">
+        <h2>Top 10 Bestsellers</h2>
+      </div>
+      <div class="hd-ft">
+        <i class="fa-solid fa-location-dot"></i>
+        <p>In Hyderabad</p>
+      </div>
+    </div>
+
+    <div class="sec-3">
+      {% for bg in best|slice:":7" %}
+      <div class="card-3" style="background-image: url({{bg.image.url}});">
+        <div class="card-up">
+          <div class="veg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>square-circle</title><path d="M20 4V20H4V4H20M22 2H2V22H22V2M12 6C8.69 6 6 8.69 6 12S8.69 18 12 18 18 15.31 18 12 15.31 6 12 6Z" /></svg>
+            <p> {{bg.name}}</p>
+          </div>
+          <p>{{bg.desc}}</p>
+        </div>
+        <div class="card-dw">
+          <div class="dw-con">
+            <p>₹{{bg.price}}</p>
+            <p>Regular | New Hand Tossed</p>
+          </div>
+          <a href="{% url 'add_to_cart' bg.id %}" class="crt"><div class="dw-btn">
+            <p>Add +</p>
+          </div></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="head3">
+      <div class="hd-up">
+        <img src="{% static 'images/index/chicken.png' %}" alt="" height="37px" width="188px">
+      </div>
+      <div class="hd-dn">
+        <h2>Chicken Fiesta</h2>
+      </div>
+      <div class="hd-ft">
+        <p>Irrestibly Flavourful Chicken Delicacies!</p>
+      </div>
+    </div>
+
+    <div class="sec-4">
+      {% for bg in best|slice:"7:14" %}
+      <div class="card-3" style="background-image: url({{bg.image.url}});">
+        <div class="card-up">
+          <div class="veg" id="nonveg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>square-triangle</title>
+              <!-- Outer square -->
+              <path d="M20 4V20H4V4H20M22 2H2V22H22V2" />
+              <!-- Inner triangle -->
+              <path d="M12 6L16 16H8L12 6Z" />
+            </svg>            
+            <p> {{bg.name}}</p>
+          </div>
+          <p>{{bg.desc}}</p>
+        </div>
+        <div class="card-dw">
+          <div class="dw-con">
+            <p>₹{{bg.price}}</p>
+            <p>Regular | New Hand Tossed</p>
+          </div>
+          <a href="{% url 'add_to_cart' bg.id %}" class="crt"><div class="dw-btn">
+            <p>Add +</p>
+          </div></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="head3">
+      <div class="hd-up">
+        <img src="{% static 'images/index/volcano.png' %}" alt="" height="37px" width="188px">
+      </div>
+      <div class="hd-dn">
+        <h2>Cheese Volcano</h2>
+      </div>
+      <div class="hd-ft">
+        <p>Molten Cheese Indulgence</p>
+      </div>
+    </div>
+    
+    <div class="sec-4">
+      {% for bg in best|slice:"14:21" %}
+      <div class="card-3" style="background-image: url({{bg.image.url}});">
+        <div class="card-up">
+          <div class="veg" {% if bg.is_nonveg %}id="nonveg"{% endif %}>
+            {% if bg.is_nonveg %}
+            <!-- SVG for nonveg (triangle) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>square-triangle</title>
+              <!-- Outer square -->
+              <path d="M20 4V20H4V4H20M22 2H2V22H22V2" />
+              <!-- Inner triangle -->
+              <path d="M12 6L16 16H8L12 6Z" />
+            </svg>
+            {% else %}
+            <!-- SVG for veg (circle) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>square-circle</title>
+              <path d="M20 4V20H4V4H20M22 2H2V22H22V2M12 6C8.69 6 6 8.69 6 12S8.69 18 12 18 18 15.31 18 12 15.31 6 12 6Z" />
+            </svg>
+            {% endif %}
+            <p>{{ bg.name }}</p>
+          </div>
+          <p>{{ bg.desc }}</p>
+        </div>
+        <div class="card-dw">
+          <div class="dw-con">
+            <p>₹{{ bg.price }}</p>
+            <p>Regular | New Hand Tossed</p>
+          </div>
+          <a href="{% url 'add_to_cart' bg.id %}" class="crt"><div class="dw-btn">
+            <p>Add +</p>
+          </div></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>    
+
+    <div class="head-new">
+      <div class="hd-up-new">
+        <img src="{% static 'images/index/bread.png' %}" alt="" height="56px" width="56px">
+      </div>
+      <div class="hd-dn-new">
+        <h2>Garlic Breads & Dips</h2>
+        <p>Best Companions To Your Pizza</p>
+      </div>
+    </div>
+
+    <div class="sec-4" id="new">
+      {% for bg in best|slice:"21:28" %}
+      <div class="card-3" style="background-image: url({{bg.image.url}});">
+        <div class="card-up">
+          <div class="veg" {% if bg.is_nonveg %}id="nonveg"{% endif %}>
+            {% if bg.is_nonveg %}
+            <!-- SVG for nonveg (triangle) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>square-triangle</title>
+              <!-- Outer square -->
+              <path d="M20 4V20H4V4H20M22 2H2V22H22V2" />
+              <!-- Inner triangle -->
+              <path d="M12 6L16 16H8L12 6Z" />
+            </svg>
+            {% else %}
+            <!-- SVG for veg (circle) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>square-circle</title>
+              <path d="M20 4V20H4V4H20M22 2H2V22H22V2M12 6C8.69 6 6 8.69 6 12S8.69 18 12 18 18 15.31 18 12 15.31 6 12 6Z" />
+            </svg>
+            {% endif %}
+            <p>{{ bg.name }}</p>
+          </div>
+          <p>{{ bg.desc }}</p>
+        </div>
+        <div class="card-dw">
+          <div class="dw-con">
+            <p>₹{{ bg.price }}</p>
+            <p>Regular | New Hand Tossed</p>
+          </div>
+          <a href="{% url 'add_to_cart' bg.id %}" class="crt"><div class="dw-btn">
+            <p>Add +</p>
+          </div></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% include 'footer.html' %}
+  </body>
+</html>

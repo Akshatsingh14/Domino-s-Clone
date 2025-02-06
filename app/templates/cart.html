@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{% static 'css/update.css' %}">
+    <style>
+
+        .cart-container {
+            max-width: 100rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 1.2rem;
+            font-family: Arial, sans-serif;
+            gap: 2rem;
+        }
+
+        .left{
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .cart-items {
+            flex: 2;
+            width: 85%;
+        }
+
+        .cart-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .cart-item img {
+            width: 21%;
+            height: 21%;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 1rem;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-details h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .quantity-btn {
+            background-color: #006491;
+            color: #fff;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: #004d6e;
+        }
+
+        .quantity span {
+            margin: 0 0.5rem;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .item-price {
+            text-align: right;
+            height: max-content;
+        }
+
+        .item-price p {
+            font-weight: bold;
+            font-size: 1.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .remove-btn {
+            color: red;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            font-family: bold;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .remove-btn:hover {
+            color: rgb(200, 20, 20);
+        }
+
+        .right{
+            height: 100%;
+            width: 30%;
+            flex: 1;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            align-self: flex-start;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .right h2{
+            color: #006491;
+        }
+
+        .cart-summary h2 {
+            margin-bottom: 1rem;
+            color: #006491;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-item.total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #006491;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem ;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .checkout-btn:hover {
+            background-color: #004d6e;
+        }
+
+        .empty-cart {
+            text-align: right;
+            font-size: 1.2em;
+            color: #777;
+            margin-top: 2rem;
+            margin-right: 15rem;
+        }
+        
+        @media (min-width: 640px) {
+            .nav-links {
+            display: flex;
+            }
+
+            .left {
+                flex-direction: column;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="{% url 'index' %}"><img src="{% static 'images/index/dominos-logo.png' %}" alt="Logo"></a>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'order_history' %}" class="nav-link">Order History</a>
+                <a href="{% url 'index' %}" class="nav-link">Home</a>
+                <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="cart-container">
+            <div class="left">
+            {% if cart_items %}
+                {% for i in cart_items %}
+                    <div class="cart-items">
+                        <div class="cart-item">
+                            {% if i.item.image %}
+                            <img src="{{ i.item.image.url }}" alt="{{ i.item.name }}">
+                            {% endif %}
+                            <div class="item-details">
+                                <h2>{{ i.item.name }}</h2>
+                                <div class="quantity" data-item-id="{{ i.id }}">
+                                    <button class="quantity-btn minus" data-action="decrease">-</button>
+                                    <span>{{ i.quantity }}</span>
+                                    <button class="quantity-btn plus" data-action="increase">+</button>
+                                </div>
+                            </div>
+                            <div class="item-price">
+                                <p>₹{{ i.item.price }}</p>
+                                <a href="{% url 'remove' i.id %}" class="remove-btn">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="right">
+                <h2>Order Summary</h2>
+                <div class="summary-item" id="subtotal">
+                    <span>Subtotal</span>
+                    <span>₹{{ total_price }}</span>
+                </div>
+                <div class="summary-item" id="gst">
+                    <span>GST</span>
+                    <span>₹{{ gst }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Delivery Fee</span>
+                    <span>₹{{ delivery_fee }}</span>
+                </div>
+                <div class="summary-item total" id="total">
+                    <span>Total</span>
+                    <span>₹{{ total_with_delivery }}</span>
+                </div>
+                <form method="POST" action="{% url 'checkout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+                </form>
+            {% else %}
+                <p class="empty-cart">Your cart is empty!</p>
+            {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.querySelectorAll(".quantity-btn").forEach((button) => {
+            button.addEventListener("click", function () {
+                const action = this.getAttribute("data-action");
+                const itemId = this.closest(".quantity").getAttribute("data-item-id");
+
+                fetch("/update-quantity/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                    body: JSON.stringify({ action: action, item_id: itemId }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        // Update the quantity display
+                        const quantitySpan = this.closest(".quantity").querySelector("span");
+                        quantitySpan.textContent = data.new_quantity;
+
+                        // Update the item total price
+                        const itemPrice = this.closest(".cart-item").querySelector(".item-price p");
+                        itemPrice.textContent = `₹${data.item_total.toFixed(2)}`;
+
+                        // Update the cart total price
+                        const subtotalElement = document.querySelector("#subtotal span:last-child");
+                        if (subtotalElement) {
+                            subtotalElement.textContent = `₹${data.total_price.toFixed(2)}`;
+                        }
+
+                        // Update the GST price
+                        const gstElement = document.querySelector("#gst span:last-child");
+                        if (gstElement) {
+                            gstElement.textContent = `₹${data.gst.toFixed(2)}`;
+                        }
+
+                        // Update the total with delivery fee
+                        const totalElement = document.querySelector("#total span:last-child");
+                        if (totalElement) {
+                            totalElement.textContent = `₹${data.total_with_delivery.toFixed(2)}`;
+                        }
+                    } else {
+                        alert(data.message || "Failed to update quantity.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+
+            });
+        });
+      </script>
+</body>
+</html>

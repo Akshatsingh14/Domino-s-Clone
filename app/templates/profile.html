@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="{% url 'index' %}"><img src="{% static 'images/index/dominos-logo.png' %}" alt="Logo"></a>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'index' %}" class="nav-link">Home</a>
+                <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="profile-card">
+                <div class="profile-image">
+                    {% if profile.user_img %}
+                    <img src="{{ profile.user_img.url }}?{{ profile.user_img.last_modified|default:'' }}" alt="Profile Picture">
+                    {% else %}
+                        <img src="{% static 'images/default_profile.png' %}" alt="Default profile picture">
+                    {% endif %}
+                </div>
+                <div class="profile-info">
+                    <div class="profile-label">User Profile</div>
+                    <h1>{{ profile.user.username }}</h1>
+                    <div class="profile-details">
+                        <p><span>Email:</span> {{ user.email|default:"Not provided" }}</p>
+                        <p><span>Phone:</span> {{ profile.phone|default:"Not provided" }}</p>
+                        <p><span>Age:</span> {{ profile.age|default:"Not provided" }}</p>
+                        <p><span>Date of Birth:</span> {{ profile.dob|date:"F d, Y"|default:"Not provided" }}</p>
+                        <p><span>Gender:</span> {{ profile.gender|default:"Not provided" }}</p>
+                    </div>
+                    <div class="profile-actions">
+                        <a href="{% url 'update' %}" class="edit-button">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
