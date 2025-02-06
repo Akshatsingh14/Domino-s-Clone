@@ -97,7 +97,19 @@ dominos-clone/
 ### Cart Page  
 📷 *[Insert Screenshot Here]*  
 
-### Checkout Page  
+### Register Page  
+📷 *[Insert Screenshot Here]*  
+
+### Login Page  
+📷 *[Insert Screenshot Here]*  
+
+### Profile Page  
+📷 *[Insert Screenshot Here]*  
+
+### Edit Profile Page  
+📷 *[Insert Screenshot Here]*  
+
+### Order History Page  
 📷 *[Insert Screenshot Here]*  
 
 ---
